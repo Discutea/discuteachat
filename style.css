@@ -1,0 +1,120 @@
+#discuteaTchat {
+  background: #f7f7f7;
+  background: -webkit-linear-gradient(#ccc, #fff);
+  background: -o-linear-gradient(#ccc, #fff);
+  background: -moz-linear-gradient(#ccc, #fff);
+  background: linear-gradient(#ccc, #fff);
+  border: 1px solid #aaa;
+  border-radius: 10px;
+  padding: 5px 5px 15px 7px
+}
+
+#discuteaTchat h3 {
+  border-bottom:1px solid #ccc;
+  font-size:11px;
+  font-weight:bold;
+  letter-spacing:2px;
+  margin-bottom:20px;
+  text-transform:uppercase;
+}
+
+#discuteaTchat form .field{
+  margin-bottom:20px;
+}
+
+#discuteaTchat label.label{
+  cursor:pointer;
+  display:block;
+  float:left;
+  font-size:13px;
+  font-weight:bold;
+  line-height:28px;
+  margin-bottom:5px;
+  width:120px;
+}
+
+#discuteaTchat div.field:hover label.label{
+  color:#0459b7;
+}
+
+#discuteaTchat div.field:hover label.label:after{
+  content:" »";
+}
+
+#discuteaTchat input[type=text],
+#discuteaTchat input[type=password]{
+  background: rgba(255, 255, 255, 0.9);
+  background:-moz-linear-gradient(90deg, #fff, #eee);
+  background:-webkit-gradient(linear, left top, left bottom, from(#eee), to(#fff), color-stop(0.2, #fff)); /* Webkit */
+  border:1px solid #aaa;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  -moz-box-shadow:0 0 3px #aaa;
+  -webkit-box-shadow:0 0 3px #aaa;
+  padding:5px;
+}
+
+#discuteaTchat input[type=text]:focus,
+#discuteaTchat input[type=password]:focus{
+  border-color:#093c75;
+  -moz-box-shadow:0 0 3px #0459b7;
+  -webkit-box-shadow:0 0 3px #0459b7;
+  outline:none;
+}
+
+#discuteaTchat select{
+  cursor:pointer;
+  padding:3px;
+  -moz-box-shadow:0 0 3px #aaa;
+  -webkit-box-shadow:0 0 3px #aaa;
+}
+
+#discuteaTchat select:active,
+#discuteaTchat select:focus{
+  border:1px solid #093c75;
+  -moz-box-shadow:0 0 3px #0459b7;
+  -webkit-box-shadow:0 0 3px #0459b7;
+  outline:none;
+}
+
+#discuteaTchat input[type=submit],
+#discuteaTchat a.submit{
+  background:#ddd;
+  background:-moz-linear-gradient(90deg, #0459b7, #08adff); /* Firefox */
+  background:-webkit-gradient(linear, left top, left bottom, from(#08adff), to(#0459b7)); /* Webkit */
+  border:1px solid #093c75;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  -moz-box-shadow:0 1px 0 #fff;
+  -webkit-box-shadow:0 1px 0 #fff;
+  color:#fff;
+  cursor:pointer;
+  font-family:Arial,sans-serif;
+  font-size:12px;
+  font-weight:bold;
+  margin-left:120px;
+  padding:5px 10px;
+  text-decoration:none;
+  text-shadow:0 1px 1px #333;
+  text-transform:uppercase;
+}
+
+#discuteaTchat input[type=submit]:hover,
+#discuteaTchat a.submit:hover{
+  background:#eee;
+  background:-moz-linear-gradient(90deg, #067cd3, #0bcdff);
+  background:-webkit-gradient(linear, left top, left bottom, from(#0bcdff), to(#067cd3));
+  border-color:#093c75;
+  text-decoration:none;
+}
+
+#discuteaTchat input[type=submit]:active,
+#discuteaTchat input[type=submit]:focus,
+#discuteaTchat a.submit:active,
+#discuteaTchat a.submit:focus{
+  background:#ccc;
+  background:-moz-linear-gradient(90deg, #0bcdff, #067cd3);
+  background:-webkit-gradient(linear, left top, left bottom, from(#067cd3), to(#0bcdff));
+  border-color:#093c75;
+  outline:none;
+}
