@@ -6,7 +6,8 @@
             locale:  "en",
             title:   "",
             channel: "Accueil",
-            url: ""
+            url: "",
+            post: false
         }, options );
 
         var trans = {
@@ -266,23 +267,42 @@
                 } else {
                     gender = 'F';
                 }
-
+                
                 country = $("#country").find('option:selected').text();
                 region = $("#region").find('option:selected').text();
                 
                 url = trans.appletUrl();
-                url += "?nick=" + nick;
-                url += "&age=" + age;
-                url += "&sex=" + gender;
-                url += "&country=" + country;
 
-                if (region != '') {
+                if (settings.post === false) {
+                  url += "?nick=" + nick;
+                  url += "&age=" + age;
+                  url += "&sex=" + gender;
+                  url += "&country=" + country;
+
+                  if (region != '') {
                     url += "&district=" + region;
+                  }
+                
+                  url += "&channel=#" + trans.channel();
+                
+                  window.location.href = url;
+                } else {
+                    
+                  form = $('<form></form>');
+                  form.attr("method", "post");
+                  form.attr("action", url);
+
+                  form.append('<input type="hidden" name="tchat[username]" value="'+nick+'">');
+                  form.append('<input type="hidden" name="tchat[age]" value="'+age+'">');
+                  form.append('<input type="hidden" name="tchat[sexe]" value="'+gender+'">');
+                  form.append('<input type="hidden" name="tchat[pays]" value="'+country+'">');
+                  if (region != '') {
+                    form.append('<input type="hidden" name="tchat[region]" value="'+region+'">');
+                  }
+                  form.append('<input type="hidden" name="tchat[channel]" value="'+trans.channel()+'">');
+                  
+                  $(form).appendTo('body').submit();
                 }
-                
-                url += "&channel=#" + trans.channel();
-                
-                window.location.href = url;
             }
         }
 
