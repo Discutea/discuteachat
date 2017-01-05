@@ -7,7 +7,8 @@
             title:   "",
             channel: "Accueil",
             url: "",
-            post: false
+            post: false,
+            cookies: false
         }, options );
 
         var trans = {
@@ -149,11 +150,20 @@
                 }
             }
         }
-       
+  
         var html = {
             username: function() {
+                if ( (settings.cookies) && (Cookies.get('Username')) ) {
+                    user = 
+                    field = 'value="'+Cookies.get('Username'); 
+                } else {
+                    field = 'placeholder="'+trans.username();
+                }
+                
+                field += '"';
+                
                 output = '<div class="field"> \
-                            <input type="text" id="username" name="username" required="required" maxlength="20" placeholder="' + trans.username() + '" /> \
+                            <input type="text" id="username" name="username" required="required" maxlength="20" '+field+' /> \
                           </div>';
                           
                 return output;
@@ -166,27 +176,46 @@
                               <option value="">' + trans.age() + '</option>';
                 
                 for (i = 13; i < 90; i++) {
-                    output += '<option value="' + i + '">' + i + ' ' + trans.years() + '</option>';
+                    output += '<option value="' + i + '"';
+                    
+                    if ( (settings.cookies) && (Cookies.get('Year')) && (i == Cookies.get('Year')) ) {
+                        output += ' selected '; 
+                    }
+                    
+                    output += '>' + i + ' ' + trans.years() + '</option>';
                 }
                 
                 output += '</select></div>';
                 
                 return output;
             },
-            
+
             gender: function() {
-                return '<div class="field"> \
-                          <div id="gender"> \
-                            <input type="radio" id="gender_0" name="[gender]" required="required" value="F" /> \
+                output = '<div class="field"> \
+                            <div id="gender"> \
+                             <input type="radio" id="gender_0" name="[gender]" required="required" value="F"';
+
+                if ( (settings.cookies) && (Cookies.get('Sex')) && (Cookies.get('Sex') == 'F') ) {
+                  output += ' checked '; 
+                }
+
+                output += '/> \
                             <label for="gender_0" class="required"> \
                               <img alt="Woman" src="https://cdn.discutea.com/img/femme.png"/> \
                             </label> \
-                            <input type="radio" id="gender_1" name="[gender]" required="required" value="M" /> \
+                            <input type="radio" id="gender_1" name="[gender]" required="required" value="M"';
+
+                if ( (settings.cookies) && (Cookies.get('Sex')) && (Cookies.get('Sex') == 'M') ) {
+                  output += ' checked '; 
+                }
+                
+                output += '/> \
                             <label for="gender_1" class="required"> \
                               <img alt="Man" src="https://cdn.discutea.com/img/homme.png"/> \
                             </label> \
                           </div> \
                         </div>';
+                return output;
             },
             
             countries: function() {
@@ -198,10 +227,16 @@
                
                     if (data.length > 0){
 
-                        countrieslist = '<option value="" selected="selected">' + trans.country() + '</option>';
+                        countrieslist = '<option value="">' + trans.country() + '</option>';
                         
                         $.each( data, function( key, val ) {
-                            countrieslist += '<option value="' + val.id + '">' + val.country + '</option>';
+                            countrieslist += '<option value="' + val.id + '"';
+                            
+                          if ( (settings.cookies) && (Cookies.get('Country')) && (val.id == Cookies.get('Country')) ) {
+                            countrieslist += ' selected '; 
+                          }
+
+                            countrieslist += '>' + val.country + '</option>';
                         });
 
                         $("#country").html(countrieslist);
@@ -214,10 +249,10 @@
             },
             
             
-            assembler: function() {
+            assembler: function() {       
                 output = '<div id="discuteaTchat"> \
                             <h3>' + trans.formtitle() + '</h3> \
-                            <form name="tchat" method="post" action="#" id="formTchat">';
+                            <form name="tchat" method="post" action="#" id="formChat">';
                 
                 output += this.username();
                 output += this.year();
@@ -248,7 +283,11 @@
                     $field.empty();
                     if (data.length > 0){
                         $.each( data, function( key, val ) {
+                          if ( (settings.cookies) && (Cookies.get('District')) && (val.id == Cookies.get('District')) ) {
+                            $field.append('<option value="' + val.id + '" selected >' + val.region + '</option>');
+                          } else {
                             $field.append('<option value="' + val.id + '">' + val.region + '</option>');
+                          }                            
                         });
                         $("#field_region").show();
                     }
@@ -257,8 +296,7 @@
             
             onSubmit: function( e ) {
                 e.preventDefault();
-
-                
+ 
                 nick = $("#username").val();
                 age = $("#age").val();
                 
@@ -306,18 +344,41 @@
             }
         }
 
-       
-        
-        
         this.html( html.assembler() );
-        $("#field_region").hide();
-        
-        $("#country").change(function() {
-          country = $("#country").val();
+        $("#field_region", this).hide();
+
+        if ( (settings.cookies) && (Cookies.get('Country')) ) {
+            events.onCountryChange( Cookies.get('Country') ); 
+        }
+
+        $("#country", this).change(function() {
+          country = $(this).val();
           events.onCountryChange(country);
+           if (settings.cookies) {
+               Cookies.set('Country', country, { expires: 365 });  
+           }
         });  
         
-        $( "#formTchat" ).submit(function( e ) {
+        if (settings.cookies){
+          $("#username", this).blur(function(){
+              console.log($(this).val());
+            Cookies.set('Username', $(this).val(), { expires: 365 })
+          }); 
+
+          $("#age", this).change(function(){
+            Cookies.set('Year', $(this).val(), { expires: 365 })
+          });
+        
+          $("#gender", this).change(function(){
+            Cookies.set('Sex', $("input[type='radio']:checked", this).val(), { expires: 365 })
+          });
+          
+          $("#region", this).change(function() {
+            Cookies.set('District', $(this).val(), { expires: 365 });  
+          });
+        }
+        
+        $( "#formChat" ).submit(function( e ) {
           events.onSubmit( e );
         });
     };
