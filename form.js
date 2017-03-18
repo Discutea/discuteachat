@@ -231,7 +231,7 @@
                   url += "?nick=" + nick;
                   url += "&age=" + age;
                   url += "&sex=" + gender;
-                  url += "&channel=#" + trans.channel();
+                  url += "&channel=" + trans.channel();
                 
                   window.location.href = url;
                 } else {
