@@ -114,7 +114,7 @@
                 
                 switch(settings.locale) {
                   case "fr":
-                    return "https://kiwi.discutea.fr/";
+                    return "https://app.discutea.fr/";
                     break;
                   case "es":
                     return "https://kiwi.discutea.es/";
@@ -230,7 +230,7 @@
                 if (settings.post === false) {
                   url += "?nick=" + nick;
                   url += "&age=" + age;
-                  url += "&sex=" + gender;
+                  url += "&gender=" + gender;
                   url += "&channel=" + trans.channel();
                 
                   window.location.href = url;
