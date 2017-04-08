@@ -114,7 +114,7 @@
                 
                 switch(settings.locale) {
                   case "fr":
-                    return "https://app.discutea.fr/";
+                    return "https://chat.discutea.fr/";
                     break;
                   case "es":
                     return "https://kiwi.discutea.es/";
