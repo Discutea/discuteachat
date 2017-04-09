@@ -117,10 +117,10 @@
                     return "https://chat.discutea.fr/";
                     break;
                   case "es":
-                    return "https://kiwi.discutea.es/";
+                    return "https://chat.discutea.es/";
                     break;
                   default:
-                    return "https://kiwi.discutea.net/";
+                    return "https://chat.discutea.net/";
                 }
             }
         }
