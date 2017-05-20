@@ -121,4 +121,28 @@ Url: This setting can be useful for installing chat in your own window
       </script>
     ```
 
+
+
+All options:
+
+    ```javascript
+      <script>
+        $(document).ready(function() {
+          $( "#form" ).discuteaChat({
+              locale:  "en",
+              title:   false,
+              url: "",
+              channel: "Accueil",
+              post: false,
+              cookies: false,
+              debug: false,
+              formclass: 'col-lg-offset-3 col-lg-6',
+              template: 'bootstrap',
+              btnclass: 'btn btn-default btn-lg btn-block',
+              btnicon: ' <i class="fa fa-rocket"></i> '
+          });
+        });
+      </script>
+    ```
+
 [DEMO](https://cdn.discutea.com/discuteachat)

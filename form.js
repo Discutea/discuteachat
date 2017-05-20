@@ -4,11 +4,16 @@
         
         var settings = $.extend({
             locale:  "en",
-            title:   "",
+            title:   false,
             channel: "Accueil",
             url: "",
             post: false,
-            cookies: false
+            cookies: false,
+            debug: false,
+            formclass: "discutea",
+            template: "semantic",
+            btnclass: 'button-chat',
+            btnicon: ''
         }, options );
 
         var trans = {
@@ -65,17 +70,17 @@
             },
              
             formtitle: function() {
-                if (typeof settings.title == 'object') {
+                if (typeof settings.title === 'object') {
                     title = settings.title[ settings.locale ];
                     
  
-                    if (typeof title != 'undefined') {
+                    if (typeof title !== 'undefined') {
                         return title;
                     }
                     
                 } 
                     
-                if (settings.title == "" || typeof settings.title == 'object') {
+                if (settings.title === "" || typeof settings.title === 'object') {
                     switch(settings.locale) {
                       case "fr":
                         return "Tchat accès visiteurs.";
@@ -90,17 +95,17 @@
             },
             
             channel: function() {
-                if (typeof settings.channel == 'object') {
+                if (typeof settings.channel === 'object') {
                     channel = settings.channel[ settings.locale ];
                     
  
-                    if (typeof channel != 'undefined') {
+                    if (typeof channel !== 'undefined') {
                         return channel.replace(/\s/g, '-');
                     }
                     
                 } 
                 
-                if (typeof settings.channel == 'object') {
+                if (typeof settings.channel === 'object') {
                     return 'Accueil';
                 }
                 
@@ -108,7 +113,7 @@
             },
             
             appletUrl: function() {
-                if (settings.url != "") {
+                if (settings.url !== "") {
                     return settings.url;
                 }
                 
@@ -123,7 +128,7 @@
                     return "https://chat.discutea.net/";
                 }
             }
-        }
+        };
   
         var html = {
             username: function() {
@@ -135,38 +140,44 @@
                 }
                 
                 field += '"';
-                
-                output = '<div class="field"> \
-                            <input type="text" id="username" name="username" required="required" maxlength="20" '+field+' /> \
-                          </div>';
-                          
+               
+               if (settings.template === 'bootstrap') {
+                    output = '<div class="form-group"> \
+                                <div class="input-group"> \
+                                  <span class="input-group-addon"><i class="fa fa-user"></i></span> \
+                                  <input type="text" id="username" class="form-control" name="username" required="required" maxlength="20" '+field+' /> \
+                                </div> \
+                              </div>';
+               } else {
+                    output = '<div class="field"> \
+                                <input type="text" id="username" name="username" required="required" maxlength="20" '+field+' /> \
+                              </div>';
+               }
+         
                 return output;
             },
 
             year: function() {
-
-                output = '<div class="field"> \
-                            <select id="age" name="age" required="required"> \
+                output = '<select id="age" name="age" required="required" class="form-control"> \
                               <option value="">' + trans.age() + '</option>';
-                
+
                 for (i = 13; i < 90; i++) {
                     output += '<option value="' + i + '"';
                     
-                    if ( (settings.cookies) && (Cookies.get('Year')) && (i == Cookies.get('Year')) ) {
+                    if ( (settings.cookies) && (Cookies.get('Year')) && (i === Cookies.get('Year')) ) {
                         output += ' selected '; 
                     }
                     
                     output += '>' + i + ' ' + trans.years() + '</option>';
                 }
                 
-                output += '</select></div>';
+                output += '</select>';
                 
                 return output;
             },
 
             gender: function() {
-                output = '<div class="field"> \
-                            <div id="gender"> \
+                output = '<div id="gender"> \
                              <input type="radio" id="gender_0" name="[gender]" required="required" value="F"';
 
                 if ( (settings.cookies) && (Cookies.get('Sex')) && (Cookies.get('Sex') == 'F') ) {
@@ -187,30 +198,40 @@
                             <label for="gender_1" class="required"> \
                               <img alt="Man" src="https://cdn.discutea.com/img/homme.png"/> \
                             </label> \
-                          </div> \
-                        </div>';
+                          </div>';
                 return output;
             },
-            
-            
-            
-            assembler: function() {       
-                output = '<div id="discuteaTchat"> \
-                            <h3>' + trans.formtitle() + '</h3> \
-                            <form name="tchat" method="post" action="#" id="formChat">';
+
+            assembler: function() {
+                output = '<div id="discuteaTchat">';
                 
+                if (settings.title !== false) {
+                    output += '<h3>' + trans.formtitle() + '</h3>';
+                }
+                
+                output +='<form name="discutea_tchat" method="post" action="#" id="formChat" class="'+settings.formclass+'">';
                 output += this.username();
-                output += this.year();
-                output += this.gender();
-                
-                output += "<div class='submit'> \
-                             <input type='submit' class='button-chat' value='" + trans.signin() + "' /> \
-                           </div></form></div>";
-                
+
+                if (settings.template === 'bootstrap') {
+                    output += '<div class="form-group row"><div class="col-xs-6">';
+                    output += this.year();
+                    output += '</div> <div id="form-sexe" class="col-xs-6">';
+                    output += this.gender();
+                    output += '</div></div><div class="form-group">';
+                } else {
+                    output += '<div class="field">';
+                    output += this.year();
+                    output += '</div><div class="field">';
+                    output += this.gender();
+                    output += '</div><div class="submit">';
+                }
+
+                output += '<button type="submit" form="formChat" class="' + settings.btnclass + '">';
+                output += settings.btnicon + " " + trans.signin();
+                output += "</button></div></form></div>";
                 return output;
             }
-            
-        }
+        };
         
         var events = {            
             onSubmit: function( e ) {
@@ -248,22 +269,28 @@
                   $(form).appendTo('body').submit();
                 }
             }
+        };
+        
+        var $_html = html.assembler();
+        
+        if (settings.debug === true){
+            console.log($_html);
         }
-
-        this.html( html.assembler() ); 
+        
+        this.html( $_html ); 
         
         if (settings.cookies){
           $("#username", this).blur(function(){
               console.log($(this).val());
-            Cookies.set('Username', $(this).val(), { expires: 365 })
+            Cookies.set('Username', $(this).val(), { expires: 365 });
           }); 
 
           $("#age", this).change(function(){
-            Cookies.set('Year', $(this).val(), { expires: 365 })
+            Cookies.set('Year', $(this).val(), { expires: 365 });
           });
         
           $("#gender", this).change(function(){
-            Cookies.set('Sex', $("input[type='radio']:checked", this).val(), { expires: 365 })
+            Cookies.set('Sex', $("input[type='radio']:checked", this).val(), { expires: 365 });
           });
         }
         
