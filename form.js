@@ -119,13 +119,13 @@
                 
                 switch(settings.locale) {
                   case "fr":
-                    return "https://chat.discutea.fr/";
+                    return "https://appli.greatchat.fr/";
                     break;
                   case "es":
-                    return "https://chat.discutea.es/";
+                    return "https://appli.greatchat.es/";
                     break;
                   default:
-                    return "https://chat.discutea.net/";
+                    return "https://appli.greatchat.net/";
                 }
             }
         };
